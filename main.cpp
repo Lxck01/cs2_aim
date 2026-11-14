@@ -9,17 +9,24 @@
 
 int main() {
     SetConsoleTitleA("cs2_aim");
-    printf("=== %s ===\n", CS2_AIM_VERSION);
+    printf("=== %s ===\n\n", CS2_AIM_VERSION);
     LoadCfg();
-    printf("[cfg] aim=%d exit=%d fov=%.2f smooth=%.2f maxTick=%.2f bone=%d tick=%dms team=%d vis=%d\n",
-        g_cfg.aimKey, g_cfg.exitKey, g_cfg.fovDeg, g_cfg.smooth,
-        g_cfg.maxDegTick, g_cfg.headBone, g_cfg.tickMs,
-        (int)g_cfg.teamCheck, (int)g_cfg.visCheck);
-
-    printf("[*] waiting for cs2.exe...\n");
+    printf("\n");
+    printf("=== CONFIG ===\n");
+    printf("Aim Key  : %d\n", g_cfg.aimKey);
+    printf("Exit Key : %d\n", g_cfg.exitKey);
+    printf("FOV      : %.2f\n", g_cfg.fovDeg);
+    printf("Smooth   : %.2f\n", g_cfg.smooth);
+    printf("Max Tick : %.2f\n", g_cfg.maxDegTick);
+    printf("Bone     : %d\n", g_cfg.headBone);
+    printf("Tick     : %dms\n", g_cfg.tickMs);
+    printf("Team     : %s\n", g_cfg.teamCheck ? "ON" : "OFF");
+    printf("Visible  : %s\n", g_cfg.visCheck ? "ON" : "OFF");
+    printf("\n=== STATUS ===\n");
+    printf("[-] waiting for cs2.exe...\n");
     while (!Attach()) Sleep(1000);
     printf("[+] attached @ %p\n", (void*)g_client);
-    printf("[+] hold aim key, exit key quits\n");
+    printf("[*] hold aim key, exit key quits\n\n");
 
     const uintptr_t va = g_client + off::dwViewAngles;
 
@@ -55,7 +62,7 @@ int main() {
     }
 
     if (g_proc) CloseHandle(g_proc);
-    printf("[+] bye\n");
+    printf("[!] bye\n\n");
     system("pause");
     return 0;
 }

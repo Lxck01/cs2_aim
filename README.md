@@ -1,6 +1,7 @@
-Create a file named `aim.cfg` in the same directory as the application and paste the configuration below.
+1. Create a file named `aim.cfg` in the same directory as the application and paste the configuration below.
 
-You can edit the settings to your preference. Changes will take effect after restarting the application.
+> [!TIP]
+> You can customise the settings to your preference. Any changes will take effect after restarting the application.
 
 ```ini
 # Keybinds:

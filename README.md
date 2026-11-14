@@ -1,5 +1,3 @@
-Shitty cs2 aimbot made with ai feel free to do whatever you want with it
-
 Create a file named `aim.cfg` in the same directory as the application and paste the configuration below.
 
 You can edit the settings to your preference. Changes will take effect after restarting the application.

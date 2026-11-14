@@ -1,0 +1,66 @@
+#include "aimbot.h"
+#include "memory.h"
+#include "offsets.h"
+#include <cmath>
+
+static bool IsVisible(uintptr_t ent) {
+    // m_bSpotted: nonzero if any teammate has spotted this entity.
+    // Less precise than m_bSpottedByMask but doesn't need player index.
+    return Rd<uint8_t>(ent + off::m_bSpotted) != 0;
+}
+
+Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
+    Target result{ false,{} };
+
+    uintptr_t local = Rd<uintptr_t>(g_client + off::dwLocalPlayerPawn);
+    if (!Valid(local)) return result;
+    if (Rd<int>(local + off::m_iHealth) <= 0) return result;
+    int myTeam = Rd<int>(local + off::m_iTeamNum);
+
+    uintptr_t myNode = Rd<uintptr_t>(local + off::m_pGameSceneNode);
+    if (!Valid(myNode)) return result;
+
+    Vec3 eye = Rd<Vec3>(myNode + off::m_vecAbsOrigin);
+    eye.z += off::EYE_HEIGHT;
+
+    Vec3 fwd = Forward(viewAngles);
+
+    uintptr_t list = Rd<uintptr_t>(g_client + off::dwEntityList);
+    uintptr_t chunk = Valid(list) ? Rd<uintptr_t>(list + off::entityChunk) : 0;
+    if (!Valid(chunk)) return result;
+
+    float bestFov = cfg.fovDeg;
+    Vec3  bestAng{};
+
+    for (int i = 1; i < off::MAX_SLOTS; ++i) {
+        uintptr_t ent = Rd<uintptr_t>(chunk + off::entityStride * i);
+        if (!Valid(ent) || ent == local) continue;
+
+        if (Rd<int>(ent + off::m_iHealth) <= 0) continue;
+        if (cfg.teamCheck && Rd<int>(ent + off::m_iTeamNum) == myTeam) continue;
+        if (cfg.visCheck && !IsVisible(ent)) continue;
+
+        uintptr_t node = Rd<uintptr_t>(ent + off::m_pGameSceneNode);
+        if (!Valid(node)) continue;
+
+        Vec3 org = Rd<Vec3>(node + off::m_vecAbsOrigin);
+        uintptr_t bones = Rd<uintptr_t>(node + off::m_modelState + off::m_pBones);
+        if (!Valid(bones)) continue;
+
+        Vec3 head = Rd<Vec3>(bones + cfg.headBone * off::boneStride);
+        if (head.x == 0 && head.y == 0 && head.z == 0) continue;
+        if (fabsf(head.x - org.x) > 100.f) continue;
+        if (fabsf(head.y - org.y) > 100.f) continue;
+        if (fabsf(head.z - org.z) > 100.f) continue;
+
+        float f = FovBetween(fwd, Normalize({ head.x - eye.x, head.y - eye.y, head.z - eye.z }));
+        if (f >= bestFov) continue;
+
+        bestFov = f;
+        bestAng = CalcAngle(eye, head);
+        result.found = true;
+        result.angle = bestAng;
+    }
+
+    return result;
+}

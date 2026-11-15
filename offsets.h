@@ -1,8 +1,8 @@
-// Last updated: 14/11/2026
+// Last updated: 15/11/2026
 #pragma once
 #include <cstdint>
 
-#define CS2_AIM_VERSION "v1.0.0"
+#define CS2_AIM_VERSION "v1.0.1"
 
 namespace off {
     // --- module offsets (client.dll) — from cs2-dumper ---

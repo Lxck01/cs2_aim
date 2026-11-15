@@ -3,10 +3,19 @@
 #include "offsets.h"
 #include <cmath>
 
-static bool IsVisible(uintptr_t ent) {
-    // m_bSpotted: nonzero if any teammate has spotted this entity.
-    // Less precise than m_bSpottedByMask but doesn't need player index.
-    return Rd<uint8_t>(ent + off::m_bSpotted) != 0;
+// Personal visibility: true only if the local player's slot bit is set
+// in the enemy's m_bSpottedByMask. Team-wide m_bSpotted is intentionally
+// not used — it fires when any teammate sees the enemy, which is what
+// caused locks through walls.
+static bool IsVisible(uintptr_t ent, int myIndex) {
+    if (myIndex < 0 || myIndex >= 64) return false;
+
+    uintptr_t spottedBase = ent + off::m_entitySpottedState;
+    int word = myIndex / 32;   // 0 or 1
+    int bit = myIndex % 32;   // 0..31
+
+    uint32_t mask = Rd<uint32_t>(spottedBase + off::spottedMask + word * 4);
+    return (mask & (1u << bit)) != 0;
 }
 
 Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
@@ -29,6 +38,17 @@ Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
     uintptr_t chunk = Valid(list) ? Rd<uintptr_t>(list + off::entityChunk) : 0;
     if (!Valid(chunk)) return result;
 
+    // Resolve local player's entity-list index once per tick.
+    // Only needed for vis_check, so skip the scan entirely otherwise.
+    int myIndex = -1;
+    if (cfg.visCheck) {
+        // Controller index - 1 == player slot, which is what the mask is indexed by
+        uint32_t hCtrl = Rd<uint32_t>(local + off::m_hController);
+        if (hCtrl == 0xFFFFFFFF) return result;
+        myIndex = static_cast<int>(hCtrl & 0x7FFF) - 1;
+        if (myIndex < 0 || myIndex >= 64) return result;
+    }
+
     float bestFov = cfg.fovDeg;
     Vec3  bestAng{};
 
@@ -38,7 +58,7 @@ Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
 
         if (Rd<int>(ent + off::m_iHealth) <= 0) continue;
         if (cfg.teamCheck && Rd<int>(ent + off::m_iTeamNum) == myTeam) continue;
-        if (cfg.visCheck && !IsVisible(ent)) continue;
+        if (cfg.visCheck && !IsVisible(ent, myIndex)) continue;
 
         uintptr_t node = Rd<uintptr_t>(ent + off::m_pGameSceneNode);
         if (!Valid(node)) continue;

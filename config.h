@@ -6,7 +6,7 @@ struct Config {
     float fovDeg;
     float smooth;
     float maxDegTick;
-    int   headBone;
+    int   aimBone;
     int   tickMs;
     bool  teamCheck;
     bool  visCheck;

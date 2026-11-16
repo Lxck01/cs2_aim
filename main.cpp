@@ -18,7 +18,7 @@ int main() {
     printf("FOV      : %.2f\n", g_cfg.fovDeg);
     printf("Smooth   : %.2f\n", g_cfg.smooth);
     printf("Max Tick : %.2f\n", g_cfg.maxDegTick);
-    printf("Bone     : %d\n", g_cfg.headBone);
+    printf("Bone     : %d\n", g_cfg.aimBone);
     printf("Tick     : %dms\n", g_cfg.tickMs);
     printf("Team     : %s\n", g_cfg.teamCheck ? "ON" : "OFF");
     printf("Visible  : %s\n", g_cfg.visCheck ? "ON" : "OFF");

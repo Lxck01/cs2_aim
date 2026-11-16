@@ -29,7 +29,7 @@ exit_key     = END
 fov          = 6.0
 smooth       = 4.0
 max_deg_tick = 2.0
-head_bone    = 6
+aim_bone    = 6
 tick_ms      = 4
 
 # Team filtering
@@ -49,7 +49,7 @@ vis_check    = false
 - 🔭 **fov:** Field-of-view setting.
 - 🎚️ **smooth:** Smoothing value.
 - 📐 **max_deg_tick:** Maximum angular adjustment per tick.
-- 🦴 **head_bone:** Target bone index.
+- 🦴 **aim_bone:** Target bone index.
 - ⏱️ **tick_ms:** Update interval in milliseconds.
 - 👥 **team_check:** Enables and disables aimbot on teammates.
 - 👁️ **vis_check:** Stop/let the aimbot lock onto a hidden enemy.

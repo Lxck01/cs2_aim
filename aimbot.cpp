@@ -3,16 +3,12 @@
 #include "offsets.h"
 #include <cmath>
 
-// Personal visibility: true only if the local player's slot bit is set
-// in the enemy's m_bSpottedByMask. Team-wide m_bSpotted is intentionally
-// not used — it fires when any teammate sees the enemy, which is what
-// caused locks through walls.
 static bool IsVisible(uintptr_t ent, int myIndex) {
     if (myIndex < 0 || myIndex >= 64) return false;
 
     uintptr_t spottedBase = ent + off::m_entitySpottedState;
-    int word = myIndex / 32;   // 0 or 1
-    int bit = myIndex % 32;   // 0..31
+    int word = myIndex / 32;
+    int bit = myIndex % 32;
 
     uint32_t mask = Rd<uint32_t>(spottedBase + off::spottedMask + word * 4);
     return (mask & (1u << bit)) != 0;
@@ -38,11 +34,8 @@ Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
     uintptr_t chunk = Valid(list) ? Rd<uintptr_t>(list + off::entityChunk) : 0;
     if (!Valid(chunk)) return result;
 
-    // Resolve local player's entity-list index once per tick.
-    // Only needed for vis_check, so skip the scan entirely otherwise.
     int myIndex = -1;
     if (cfg.visCheck) {
-        // Controller index - 1 == player slot, which is what the mask is indexed by
         uint32_t hCtrl = Rd<uint32_t>(local + off::m_hController);
         if (hCtrl == 0xFFFFFFFF) return result;
         myIndex = static_cast<int>(hCtrl & 0x7FFF) - 1;
@@ -67,7 +60,7 @@ Target FindTarget(const Config& cfg, const Vec3& viewAngles) {
         uintptr_t bones = Rd<uintptr_t>(node + off::m_modelState + off::m_pBones);
         if (!Valid(bones)) continue;
 
-        Vec3 head = Rd<Vec3>(bones + cfg.headBone * off::boneStride);
+        Vec3 head = Rd<Vec3>(bones + cfg.aimBone * off::boneStride);
         if (head.x == 0 && head.y == 0 && head.z == 0) continue;
         if (fabsf(head.x - org.x) > 100.f) continue;
         if (fabsf(head.y - org.y) > 100.f) continue;

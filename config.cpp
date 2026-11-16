@@ -11,10 +11,10 @@ Config g_cfg = {
     6.0f,          // fovDeg
     4.0f,          // smooth
     2.0f,          // maxDegTick
-    6,             // headBone
+    6,             // aimBone
     4,             // tickMs
-    true,          // teamCheck (preserves original behavior)
-    false          // visCheck  (off by default — offset needs verification)
+    true,          // teamCheck
+    false          // visCheck
 };
 
 int ParseVK(const char* s) {
@@ -83,7 +83,7 @@ void LoadCfg() {
         else if (!_stricmp(key, "fov")) { float v = (float)atof(val); if (v > 0.1f && v < 90.f)  g_cfg.fovDeg = v; }
         else if (!_stricmp(key, "smooth")) { float v = (float)atof(val); if (v >= 1.f && v <= 100.f) g_cfg.smooth = v; }
         else if (!_stricmp(key, "max_deg_tick")) { float v = (float)atof(val); if (v > 0.05f && v < 90.f) g_cfg.maxDegTick = v; }
-        else if (!_stricmp(key, "head_bone")) { int v = atoi(val); if (v >= 0 && v < 256) g_cfg.headBone = v; }
+        else if (!_stricmp(key, "aim_bone")) { int v = atoi(val); if (v >= 0 && v < 256) g_cfg.aimBone = v; }
         else if (!_stricmp(key, "tick_ms")) { int v = atoi(val); if (v >= 1 && v <= 50)  g_cfg.tickMs = v; }
         else if (!_stricmp(key, "team_check")) { g_cfg.teamCheck = ParseBool(val); }
         else if (!_stricmp(key, "vis_check")) { g_cfg.visCheck = ParseBool(val); }

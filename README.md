@@ -25,20 +25,12 @@ You can optionally create an `aim.cfg` file in the same directory as `cs2_aim.ex
 
 aim_key      = MOUSE5
 exit_key     = END
-
-fov          = 6.0
-smooth       = 4.0
+fov          = 2.0
+smooth       = 5.0
 max_deg_tick = 2.0
-aim_bone    = 6
+aim_bone     = 7
 tick_ms      = 4
-
-# Team filtering
 team_check   = true
-
-# Visibility filtering
-# Requires off::m_bSpotted in offsets.h to be verified
-# for your current game build.
-# Incorrect offsets may cause visibility checks to behave unexpectedly.
 vis_check    = false
 ```
 

@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <cstdio>
 #include <cmath>
+#include "version.h"
 #include "config.h"
 #include "memory.h"
 #include "math.h"

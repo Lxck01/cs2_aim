@@ -2,8 +2,6 @@
 #pragma once
 #include <cstdint>
 
-#define CS2_AIM_VERSION "v1.0.1"
-
 namespace off {
     // --- module offsets (client.dll) — from cs2-dumper ---
     constexpr uintptr_t dwLocalPlayerPawn = 0x2553D38;

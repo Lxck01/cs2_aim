@@ -144,6 +144,7 @@
     <ClInclude Include="math.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="offsets.h" />
+    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aimbot.cpp" />

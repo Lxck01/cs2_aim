@@ -4,9 +4,9 @@
 
 namespace off {
     // --- module offsets (client.dll) — from cs2-dumper ---
-    constexpr uintptr_t dwLocalPlayerPawn = 0x2553D38;
-    constexpr uintptr_t dwViewAngles = 0x256A4B8;
-    constexpr uintptr_t dwEntityList = 0x2709010;
+    constexpr uintptr_t dwLocalPlayerPawn = 0x2557538;
+    constexpr uintptr_t dwViewAngles = 0x256D668;
+    constexpr uintptr_t dwEntityList = 0x270C680;
 
     // --- pawn fields (on C_CSPlayerPawn) ---
     constexpr uintptr_t m_pGameSceneNode = 0x330;

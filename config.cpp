@@ -8,10 +8,10 @@
 Config g_cfg = {
     VK_XBUTTON2,   // aimKey
     VK_END,        // exitKey
-    6.0f,          // fovDeg
-    4.0f,          // smooth
+    2.0f,          // fovDeg
+    5.0f,          // smooth
     2.0f,          // maxDegTick
-    6,             // aimBone
+    7,             // aimBone
     4,             // tickMs
     true,          // teamCheck
     false          // visCheck

@@ -1,12 +1,12 @@
-// Last updated: 15/11/2026
+// Last updated: 25/11/2026
 #pragma once
 #include <cstdint>
 
 namespace off {
     // --- module offsets (client.dll) — from cs2-dumper ---
-    constexpr uintptr_t dwLocalPlayerPawn = 0x2557538;
-    constexpr uintptr_t dwViewAngles = 0x256D668;
-    constexpr uintptr_t dwEntityList = 0x270C680;
+    constexpr uintptr_t dwLocalPlayerPawn = 0x255EAB8;
+    constexpr uintptr_t dwViewAngles = 0x2574BE8;
+    constexpr uintptr_t dwEntityList = 0x27145B0;
 
     // --- pawn fields (on C_CSPlayerPawn) ---
     constexpr uintptr_t m_pGameSceneNode = 0x330;
